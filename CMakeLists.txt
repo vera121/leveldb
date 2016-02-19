@@ -53,6 +53,11 @@ if(NOT QDB_VERSION)
         system
         REQUIRED)
 
+    set(USE_BOOST_IMPORTED_TARGETS OFF)
+    if("${Boost_LIBRARIES}" MATCHES "Boost::")
+        set(USE_BOOST_IMPORTED_TARGETS ON)
+    endif()
+
     set(SNAPPY_LIBRARY "")
 
     string(REGEX MATCH "clang" CLANG ${CMAKE_CXX_COMPILER})
