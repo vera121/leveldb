@@ -25,25 +25,8 @@ if(NOT QDB_VERSION)
             set(QDB_CPU_ARCH "32bit")
         endif(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "amd64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
     endif(CMAKE_CL_64)
-
-# for Windows we need to add some information to find the "right" boost library dir
-    if(MSVC)
-        if(NOT BOOST_LIBRARYDIR)
-            if(QDB_CPU_ARCH STREQUAL "64bit")
-                message(STATUS "Looking for 64-bit boost libraries")
-                file(TO_CMAKE_PATH $ENV{BOOST_ROOT}/stage64/lib BOOST_LIBRARYDIR)
-            else(QDB_CPU_ARCH STREQUAL "64bit")
-                message(STATUS "Looking for 32-bit boost libraries")
-                file(TO_CMAKE_PATH $ENV{BOOST_ROOT}/stage/lib BOOST_LIBRARYDIR)
-            endif(QDB_CPU_ARCH STREQUAL "64bit")
-        endif(NOT BOOST_LIBRARYDIR)
-    endif(MSVC)
     
     add_definitions(-DBOOST_ALL_NO_LIB)
-
-    set(Boost_USE_STATIC_LIBS ON)
-    set(Boost_USE_MULTITHREAD ON)
-    set(Boost_USE_STATIC_RUNTIME OFF)
 
     set(Boost_ADDITIONAL_VERSIONS)
 
