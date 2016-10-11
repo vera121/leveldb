@@ -11,7 +11,7 @@ set(LEVELDB_VERSION "${LEVELDB_MAJOR_VERSION}.${LEVELDB_MINOR_VERSION}")
 if(NOT QDB_VERSION)
 
 # not included from the marvellous qdb
-    project(leveldb)    
+    project(leveldb)
     set(CMAKE_DEBUG_POSTFIX "d")
     set(QDB_DEBUG_POSTFIX "d")
     set(QDB_RELEASE_POSTFIX "")
@@ -25,12 +25,12 @@ if(NOT QDB_VERSION)
             set(QDB_CPU_ARCH "32bit")
         endif(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "amd64" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
     endif(CMAKE_CL_64)
-    
+
     add_definitions(-DBOOST_ALL_NO_LIB)
 
     set(Boost_ADDITIONAL_VERSIONS)
 
-    find_package(Boost COMPONENTS 
+    find_package(Boost COMPONENTS
         date_time
         filesystem
         system
@@ -193,6 +193,9 @@ target_link_libraries(leveldb
     ${Pthread_LIBRARY}
 )
 
+# Disable boost autolinking in consuming projects
+target_compile_definitions(leveldb PUBLIC -DBOOST_ALL_NO_LIB)
+
 include(CMakePackageConfigHelpers)
 
 set(INSTALL_INCLUDE_DIR include)
@@ -200,7 +203,7 @@ configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/package-config.c
                               INSTALL_DESTINATION CMake
                               PATH_VARS INSTALL_INCLUDE_DIR
                               )
-       
+
 write_basic_package_version_file( ${CMAKE_CURRENT_BINARY_DIR}/leveldb-config-version.cmake VERSION ${LEVELDB_VERSION} COMPATIBILITY SameMajorVersion )
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/leveldb-config.cmake ${CMAKE_CURRENT_BINARY_DIR}/leveldb-config-version.cmake
@@ -214,7 +217,7 @@ install(TARGETS leveldb
 
 install(EXPORT leveldb-targets DESTINATION CMake)
 
-install(DIRECTORY include DESTINATION .)    
+install(DIRECTORY include DESTINATION .)
 
 add_executable(leveldbutil
     db/leveldb_main.cc)
@@ -234,7 +237,7 @@ install(TARGETS leveldbutil
 ##################################### TESTS #######################################
 # Every leveldb test file has to be compiled as an independant binary
 # because of the test framework used by leveldb.
-add_library(leveldb_test_rt 
+add_library(leveldb_test_rt
     util/testutil.h
     util/testutil.cc
     util/testharness.h
